@@ -1,0 +1,530 @@
+{
+  "phase": "PHASE_15",
+  "title": "End-to-End DPR Workflow & Excel Validation",
+  "timestamp": "2026-11-06T15:30:00Z",
+  "summary": {
+    "totalChecks": 73,
+    "passedChecks": 73,
+    "failedChecks": 0,
+    "passRatePercent": 100.0,
+    "validationStatus": "STABLE_AND_VERIFIED"
+  },
+  "workflowStagesValidated": [
+    {
+      "stage": 1,
+      "name": "Image Upload & Intake",
+      "status": "VERIFIED",
+      "details": "Multi-file batch upload (2 scans accepted, MIME/size validation active)"
+    },
+    {
+      "stage": 2,
+      "name": "OpenCV Preprocessing",
+      "status": "VERIFIED",
+      "details": "EXIF correction, skew correction, CLAHE contrast enhancement"
+    },
+    {
+      "stage": 3,
+      "name": "Layout Detection",
+      "status": "VERIFIED",
+      "details": "Fixed ASLY-DPR-REV01 template alignment, 189 regions, 14 rows x 11 cols"
+    },
+    {
+      "stage": 4,
+      "name": "Handwriting Recognition",
+      "status": "VERIFIED",
+      "details": "Hybrid TrOCR Small + PP-OCRv5 Mobile routing, cancel stroke detection"
+    },
+    {
+      "stage": 5,
+      "name": "Human Verification (HITL)",
+      "status": "VERIFIED",
+      "details": "Non-mutating format validation, edit persistence, multi-report isolation"
+    },
+    {
+      "stage": 6,
+      "name": "Excel Generation",
+      "status": "VERIFIED",
+      "details": "ASLY-DPR-REV01 paper standard, 1 sheet/DPR, merged headers, governance footer"
+    },
+    {
+      "stage": 7,
+      "name": "Programmatic Excel Inspection",
+      "status": "VERIFIED",
+      "details": "openpyxl structural and data integrity verification, zero row drift"
+    }
+  ],
+  "samplesEvaluated": [
+    {
+      "filename": "walvoil_dpr_sample_1.jpg",
+      "alignmentConfidence": 0.98,
+      "tableRowsCount": 14,
+      "activeRows": 6,
+      "cancelledRows": 8,
+      "operator": "Kashinatha / Thippanna",
+      "excelSheetName": "Report 1"
+    },
+    {
+      "filename": "walvoil_dpr_sample_2.jpg",
+      "alignmentConfidence": 0.98,
+      "tableRowsCount": 14,
+      "activeRows": 3,
+      "cancelledRows": 11,
+      "operator": "Jogannatha G.N.",
+      "excelSheetName": "Report 2"
+    }
+  ],
+  "excelStructureMetrics": {
+    "titleMerged": "A1:K1",
+    "metadataRows": [
+      3,
+      4
+    ],
+    "headerRows": [
+      6,
+      7
+    ],
+    "productionRows": "Rows 8-21 (14 rows)",
+    "col0Subfields": "PWH: <pwh>\\nOrd No: <ordNo>",
+    "operatorSignRow": 23,
+    "governanceFooterRow": 25,
+    "auditNoticeRow": 26,
+    "governanceIssuedBy": "ASLY",
+    "governanceControlledBy": "IMS",
+    "governanceRevision": "01",
+    "governanceApprovedBy": "MGT"
+  },
+  "checks": [
+    {
+      "category": "API_Status",
+      "name": "GET /api/v1/reports/status returns 200",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "API_Status",
+      "name": "Pipeline components active",
+      "status": "PASS",
+      "detail": "({'upload_intake': 'ready', 'image_preprocessing': 'active', 'layout_detection': 'active', 'handwriting_recognition': 'active'})"
+    },
+    {
+      "category": "Upload_Intake",
+      "name": "POST /api/v1/reports/upload multi-file 200 OK",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Upload_Intake",
+      "name": "Both sample scans accepted in batch",
+      "status": "PASS",
+      "detail": "(total=2)"
+    },
+    {
+      "category": "Recognition",
+      "name": "Sample 1 template identified as ASLY-DPR-REV01",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Recognition",
+      "name": "Sample 1 alignment confidence >= 0.90",
+      "status": "PASS",
+      "detail": "(0.98)"
+    },
+    {
+      "category": "Recognition",
+      "name": "Sample 1 header operator routed to TrOCR Small",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Recognition",
+      "name": "Sample 1 header date routed to PP-OCRv5 Mobile",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Recognition",
+      "name": "Sample 1 exactly 14 production rows",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Recognition",
+      "name": "Sample 1 Row 1 Col 0 PWH extracted",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Recognition",
+      "name": "Sample 1 Row 1 Col 0 Ord No extracted",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Recognition",
+      "name": "Sample 1 cancelled rows detected (Rows 7-14)",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Recognition",
+      "name": "Sample 1 operator signature flagged without OCR",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Recognition",
+      "name": "Sample 2 template identified as ASLY-DPR-REV01",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Recognition",
+      "name": "Sample 2 operator name routed to TrOCR Small",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Recognition",
+      "name": "Sample 2 Row 1 Part number extracted",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Generation",
+      "name": "Node export script exited with code 0",
+      "status": "PASS",
+      "detail": "(stderr: )"
+    },
+    {
+      "category": "Excel_Generation",
+      "name": "Export summary success=True",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Generation",
+      "name": "Workbook contains 2 sheets",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Generation",
+      "name": "Total production rows matches 28 (14 * 2)",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Generated .xlsx file exists on disk",
+      "status": "PASS",
+      "detail": "(D:\\Walvoil_New_Project\\backend\\evaluation\\e2e_validated_report.xlsx)"
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Workbook sheet names match 2 uploaded DPRs",
+      "status": "PASS",
+      "detail": "['Report 1', 'Report 2']"
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Sheet 1 Title text in A1",
+      "status": "PASS",
+      "detail": "('WALVOIL \u2013 DAILY PRODUCTION REPORT (FINAL ASSEMBLY)')"
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Sheet 1 Title merged A1:K1",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Sheet 1 Date label 'Date:' in A3",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Sheet 1 Date value '23/09/2026' in B3",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Sheet 1 Operator Name label in D3",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Sheet 1 Operator Name in E3",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Sheet 1 Shift label 'Shift:' in H3",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Sheet 1 Shift value '1st' in I3",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Sheet 1 Bench label 'Bench:' in J3",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Sheet 1 Bench value '3' in K3",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Sheet 1 Worked Hours label in A4",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Sheet 1 Worked Hours value in B4",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Col 0 Header 'Batch Number and Order No' in A6",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Col 1 Header 'Family' in B6",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Col 2 Header 'Part Number' in C6",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Col 3-4 Grouped Header 'Time' in D6",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Col 3 Subheader 'Start' in D7",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Col 4 Subheader 'End' in E7",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Col 5 Header 'Qty in no\\'s' in F6",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Col 6 Header 'Remarks' in G6",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Col 7 Header 'Idle time code' in H6",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Col 8 Header 'Idle Time From' in I6",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Col 9 Header 'Idle Time To' in J6",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Col 10 Header 'Total time' in K6",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Header merge A6:A7 exists",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Header merge B6:B7 exists",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Header merge C6:C7 exists",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Header merge D6:E6 exists (Time)",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Header merge H6:H7 exists (Idle code)",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Header merge K6:K7 exists (Total time)",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Data",
+      "name": "Sheet 1 Row 8 Col A has multi-line PWH and Ord No",
+      "status": "PASS",
+      "detail": "('PWH: 2638043\nOrd No: 1118496')"
+    },
+    {
+      "category": "Excel_Data",
+      "name": "Sheet 1 Row 8 Col B Family matches SD6/5",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Data",
+      "name": "Sheet 1 Row 8 Col C has EMPLOYEE-CORRECTED Part Number '512500254'",
+      "status": "PASS",
+      "detail": "(got '512500254')"
+    },
+    {
+      "category": "Excel_Data",
+      "name": "Sheet 1 Row 8 Col G has EMPLOYEE-CORRECTED Remarks 'No cloche'",
+      "status": "PASS",
+      "detail": "(got 'No cloche')"
+    },
+    {
+      "category": "Excel_Data",
+      "name": "Sheet 1 Cancelled Rows (Row 14-21) do NOT shift data into active rows",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Sheet 1 Operator sign label in A23",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Sheet 1 Governance 'Issued by: ASLY' in A25",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Sheet 1 Governance 'Controlled by: IMS' in D25",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Sheet 1 Governance 'Revision: 01' in G25",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Sheet 1 Governance 'Approved by: MGT' in J25",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Sheet 1 Audit notice in A26",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Excel_Structure",
+      "name": "Sheet 1 Audit notice merged A26:K26",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Sheet_Isolation",
+      "name": "Sheet 2 Operator is Jogannatha G.N.",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Sheet_Isolation",
+      "name": "Sheet 2 Bench value is 11",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Sheet_Isolation",
+      "name": "Sheet 2 Row 8 Col A has distinct PWH: 2638608",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Sheet_Isolation",
+      "name": "Sheet 2 Row 8 Col C Part Number is 1021H0001-A (NOT contaminated by Sheet 1)",
+      "status": "PASS",
+      "detail": "(got '1021H0001-A')"
+    },
+    {
+      "category": "Robustness",
+      "name": "0-byte image rejected with HTTP 400",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Robustness",
+      "name": "Corrupt image bytes rejected with HTTP 400",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Robustness",
+      "name": "Unsupported extension rejected with HTTP 400",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "category": "Deliverables",
+      "name": "phase_15_field_comparison.csv written",
+      "status": "PASS",
+      "detail": "(27 fields)"
+    }
+  ]
+}

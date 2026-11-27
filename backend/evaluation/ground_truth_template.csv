@@ -1,0 +1,18 @@
+image_filename,crop_id,section,row_index,field_name,field_type,ground_truth_text,operator_id,scan_condition,notes
+sample_dpr_001.jpg,hdr_date,header,0,date,date_yyyy_mm_dd,2026-10-14,OP-04,flatbed_300dpi,Clean flatbed scan
+sample_dpr_001.jpg,hdr_operator,header,0,operator_name,alpha,Ramesh Kumar,OP-04,flatbed_300dpi,Cursive initial
+sample_dpr_001.jpg,hdr_shift,header,0,shift,alphanumeric,Shift I,OP-04,flatbed_300dpi,Roman numeral
+sample_dpr_001.jpg,hdr_bench,header,0,bench,alphanumeric,B-04,OP-04,flatbed_300dpi,Hyphenated code
+sample_dpr_001.jpg,hdr_worked_hours,header,0,worked_hours,numeric,8.0,OP-04,flatbed_300dpi,Decimal point
+sample_dpr_001.jpg,row01_batch_order,table,1,batch_order,alphanumeric,B49201 / ORD-1029,OP-04,flatbed_300dpi,Slash separated
+sample_dpr_001.jpg,row01_family,table,1,family,alpha,SDM,OP-04,flatbed_300dpi,All caps abbreviation
+sample_dpr_001.jpg,row01_part_number,table,1,part_number,alphanumeric,20049281A,OP-04,flatbed_300dpi,Alphanumeric part code
+sample_dpr_001.jpg,row01_time_start,table,1,time_start,time_hh_mm,08:30,OP-04,flatbed_300dpi,Colon separator
+sample_dpr_001.jpg,row01_time_end,table,1,time_end,time_hh_mm,11:45,OP-04,flatbed_300dpi,Colon separator
+sample_dpr_001.jpg,row01_qty,table,1,qty,numeric,45,OP-04,flatbed_300dpi,Pure numeric integer
+sample_dpr_001.jpg,row01_remarks,table,1,remarks,alpha,Completed on schedule,OP-04,flatbed_300dpi,Sentence fragment
+sample_dpr_001.jpg,row01_idle_code,table,1,idle_code,alphanumeric,ID-02,OP-04,flatbed_300dpi,Short code
+sample_dpr_001.jpg,row01_idle_from,table,1,idle_from,time_hh_mm,10:00,OP-04,flatbed_300dpi,Colon separator
+sample_dpr_001.jpg,row01_idle_to,table,1,idle_to,time_hh_mm,10:15,OP-04,flatbed_300dpi,Colon separator
+sample_dpr_001.jpg,row01_total_time,table,1,total_time,numeric,3.25,OP-04,flatbed_300dpi,Decimal hours
+

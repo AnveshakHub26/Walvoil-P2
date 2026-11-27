@@ -1,0 +1,31 @@
+# Python & Backend
+backend/.venv/
+backend/venv/
+backend/.cache/
+backend/.env
+backend/.env.*
+!backend/.env.example
+backend/evaluation/diagnostics/
+__pycache__/
+*.py[cod]
+logs/
+*.log
+
+# Node & Frontend
+node_modules/
+dist/
+dist-ssr/
+.env
+.env.*
+!backend/.env.example
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+scratch*
+test_full_sheet.jpg
+

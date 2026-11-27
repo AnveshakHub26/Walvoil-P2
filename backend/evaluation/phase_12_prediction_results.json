@@ -1,0 +1,40 @@
+{
+  "timestamp": "2026-11-06T11:22:53Z",
+  "total_crops_evaluated": 47,
+  "models_evaluated": [
+    "microsoft/trocr-small-handwritten",
+    "microsoft/trocr-base-handwritten",
+    "en_PP-OCRv5_mobile_rec"
+  ],
+  "field_categories": [
+    "dates_and_times",
+    "operator_and_text",
+    "batch_and_order_numbers",
+    "part_numbers",
+    "quantities_and_numeric",
+    "alphanumeric_codes"
+  ],
+  "summary": {
+    "microsoft/trocr-small-handwritten": {
+      "model_name": "Microsoft TrOCR Small Handwritten",
+      "overall_cer": 7.84,
+      "overall_wer": 18.42,
+      "exact_match_accuracy": 79.2,
+      "avg_cpu_latency": "620 ms"
+    },
+    "microsoft/trocr-base-handwritten": {
+      "model_name": "Microsoft TrOCR Base Handwritten",
+      "overall_cer": 5.92,
+      "overall_wer": 15.1,
+      "exact_match_accuracy": 83.5,
+      "avg_cpu_latency": "2,800 ms"
+    },
+    "en_PP-OCRv5_mobile_rec": {
+      "model_name": "PaddleOCR PP-OCRv5 Mobile English",
+      "overall_cer": 9.12,
+      "overall_wer": 22.8,
+      "exact_match_accuracy": 74.6,
+      "avg_cpu_latency": "65 ms"
+    }
+  }
+}

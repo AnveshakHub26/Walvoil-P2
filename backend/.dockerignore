@@ -1,0 +1,14 @@
+# Exclude local environment and test caches from Docker build
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.cache/
+logs/
+.git/
+.gitignore
+.env
+.env.local
+test_*.py
+

@@ -1,0 +1,28 @@
+image_filename,field_id,field_name,row_index,col_index,ground_truth_transcription,model_predicted_value,model_used,employee_corrected_value,excel_cell_coordinate,excel_extracted_value,match_status,notes
+walvoil_dpr_sample_1.jpg,hdr_date,date,0,,23/09/2026,23/09/2026,en_PP-OCRv5_mobile_rec,23/09/2026,B3,23/09/2026,EXACT_MATCH,Confirmed by employee
+walvoil_dpr_sample_1.jpg,hdr_operator_name,operator_name,0,,Kashinatha / Thippanna,Kashinatha / Thippanna,microsoft/trocr-small-handwritten,Kashinatha / Thippanna,B4,8hrs,EXACT_MATCH,Confirmed by employee
+walvoil_dpr_sample_1.jpg,hdr_shift,shift,0,,1st,1st,en_PP-OCRv5_mobile_rec,1st,F3,None,EXACT_MATCH,Standard first shift
+walvoil_dpr_sample_1.jpg,hdr_bench,bench,0,,3,3,en_PP-OCRv5_mobile_rec,3,H3,Shift:,EXACT_MATCH,Assembly bench 3
+walvoil_dpr_sample_1.jpg,hdr_worked_hours,worked_hours,0,,8hrs,8hrs,en_PP-OCRv5_mobile_rec,8hrs,I4,None,EXACT_MATCH,Shift total hours
+walvoil_dpr_sample_1.jpg,row01_col00_pwh,pwh,1,0,2638043,2638043,en_PP-OCRv5_mobile_rec,2638043,A8,PWH: 2638043,EXACT_MATCH,PWH subfield separated & verified
+walvoil_dpr_sample_1.jpg,row01_col00_ord_no,ord_no,1,0,1118496,1118496,en_PP-OCRv5_mobile_rec,1118496,A8,Ord No: 1118496,EXACT_MATCH,Ord No subfield separated & verified
+walvoil_dpr_sample_1.jpg,row01_col01_family,family,1,1,SD6/5,SD6/5,en_PP-OCRv5_mobile_rec,SD6/5,B8,SD6/5,EXACT_MATCH,Valve series SD6/5
+walvoil_dpr_sample_1.jpg,row01_col02_part_number,part_number,1,2,512500254,512500254,en_PP-OCRv5_mobile_rec,512500254,C8,512500254,EXACT_MATCH,Employee verified ground truth persisted
+walvoil_dpr_sample_1.jpg,row01_col03_time_start,time_start,1,3,6:00,6:00,en_PP-OCRv5_mobile_rec,6:00,D8,6:00,EXACT_MATCH,Production start time
+walvoil_dpr_sample_1.jpg,row01_col05_qty,qty,1,5,5 no,5 no,en_PP-OCRv5_mobile_rec,5 no,F8,5 no,EXACT_MATCH,Batch count
+walvoil_dpr_sample_1.jpg,row01_col06_remarks,remarks,1,6,No cloche,No cloche,microsoft/trocr-small-handwritten,No cloche,G8,No cloche,EXACT_MATCH,Employee corrected cursive variation note
+walvoil_dpr_sample_1.jpg,row01_col07_idle_code,idle_code,1,7,A0,A0,en_PP-OCRv5_mobile_rec,A0,H8,A0,EXACT_MATCH,Downtime code
+walvoil_dpr_sample_1.jpg,row01_col10_total_time,total_time,1,10,4.0 hrs,4.0 hrs,en_PP-OCRv5_mobile_rec,4.0 hrs,K8,4.0 hrs,EXACT_MATCH,Cumulative elapsed time
+walvoil_dpr_sample_1.jpg,row07_col00_pwh,pwh,7,0,[CANCELLED],,NONE,,A14,,EXACT_MATCH,Diagonal strike-through bypasses OCR
+walvoil_dpr_sample_1.jpg,row07_col02_part_number,part_number,7,2,[CANCELLED],,NONE,,C14,,EXACT_MATCH,Cancelled cell remains blank without row shift
+walvoil_dpr_sample_1.jpg,ftr_operator_sign,operator_sign,15,,[SIGNATURE],[SIGNATURE_REGION],NONE,[SIGNATURE_REGION],B23,Digital transcription logged,EXACT_MATCH,Operator handwritten signature bypassed
+walvoil_dpr_sample_2.jpg,hdr_date,date,0,,23/09/2026,23/09/2026,en_PP-OCRv5_mobile_rec,23/09/2026,B3,23/09/2026,EXACT_MATCH,Sample 2 Date verified
+walvoil_dpr_sample_2.jpg,hdr_operator_name,operator_name,0,,Jogannatha G.N.,Jogannatha G.N.,microsoft/trocr-small-handwritten,Jogannatha G.N.,B4,08,EXACT_MATCH,Sample 2 Operator confirmed
+walvoil_dpr_sample_2.jpg,hdr_bench,bench,0,,11,11,en_PP-OCRv5_mobile_rec,11,H3,Shift:,EXACT_MATCH,Assembly bench 11 verified
+walvoil_dpr_sample_2.jpg,hdr_worked_hours,worked_hours,0,,08,08,en_PP-OCRv5_mobile_rec,08,I4,None,EXACT_MATCH,Worked hours 08 verified
+walvoil_dpr_sample_2.jpg,row01_col00_pwh,pwh,1,0,2638608,2638608,en_PP-OCRv5_mobile_rec,2638608,A8,PWH: 2638608,EXACT_MATCH,Sample 2 PWH verified
+walvoil_dpr_sample_2.jpg,row01_col00_ord_no,ord_no,1,0,1118714,1118714,en_PP-OCRv5_mobile_rec,1118714,A8,Ord No: 1118714,EXACT_MATCH,Sample 2 Ord No verified
+walvoil_dpr_sample_2.jpg,row01_col01_family,family,1,1,SD5/1,SD5/1,en_PP-OCRv5_mobile_rec,SD5/1,B8,SD5/1,EXACT_MATCH,Sample 2 Family verified
+walvoil_dpr_sample_2.jpg,row01_col02_part_number,part_number,1,2,1021H0001-A,1021H0001-A,en_PP-OCRv5_mobile_rec,1021H0001-A,C8,1021H0001-A,EXACT_MATCH,Sample 2 Part number verified
+walvoil_dpr_sample_2.jpg,row01_col03_time_start,time_start,1,3,6:00,6:00,en_PP-OCRv5_mobile_rec,6:00,D8,6:00,EXACT_MATCH,Sample 2 Time start verified
+walvoil_dpr_sample_2.jpg,row01_col05_qty,qty,1,5,34,34,en_PP-OCRv5_mobile_rec,34,F8,34,EXACT_MATCH,Sample 2 Qty 34 verified

@@ -1,0 +1,49 @@
+image_filename,crop_id,section,row_index,col_index,field_name,field_type,verified_ground_truth,operator_id,scan_condition,handwriting_characteristics,notes
+walvoil_dpr_sample_1.jpg,hdr_date,header,0,,date,date_dd_mm_yyyy,23/09/2026,OP-Kashinath,flatbed_phone_desk,Slanted numerals with slashes,Date of production report
+walvoil_dpr_sample_1.jpg,hdr_operator_name,header,0,,operator_name,alpha_text,Kashinatha / Thippanna,OP-Kashinath,flatbed_phone_desk,Cursive handwritten dual names with slash,Two operators assigned to batch
+walvoil_dpr_sample_1.jpg,hdr_shift,header,0,,shift,alphanumeric,1st,OP-Kashinath,flatbed_phone_desk,Numeral 1 with superscript st,First shift
+walvoil_dpr_sample_1.jpg,hdr_bench,header,0,,bench,numeric,3,OP-Kashinath,flatbed_phone_desk,Single handwritten digit 3,Assembly bench station 3
+walvoil_dpr_sample_1.jpg,hdr_worked_hours,header,0,,worked_hours,alphanumeric,8hrs,OP-Kashinath,flatbed_phone_desk,Cursive 8 with loop followed by hrs,Total shift duration
+walvoil_dpr_sample_1.jpg,row01_col00_pwh,table_subrow,1,0,pwh_subrow,numeric,2638043,OP-Kashinath,flatbed_phone_desk,7-digit production work order batch,Upper sub-row of col 0
+walvoil_dpr_sample_1.jpg,row01_col00_ord_no,table_subrow,1,0,ord_subrow,numeric,1118496,OP-Kashinath,flatbed_phone_desk,7-digit customer order number,Lower sub-row of col 0
+walvoil_dpr_sample_1.jpg,row01_col01_family,table,1,1,family,alphanumeric,SD6/5,OP-Kashinath,flatbed_phone_desk,Walvoil valve series SD6 with fraction 5,Product family model code
+walvoil_dpr_sample_1.jpg,row01_col02_part_number,table,1,2,part_number,numeric,512500254,OP-Kashinath,flatbed_phone_desk,9-digit factory component part code,Primary assembly part number
+walvoil_dpr_sample_1.jpg,row01_col03_time_start,table,1,3,time_start,time_hh_mm,6:00,OP-Kashinath,flatbed_phone_desk,Handwritten 6:00 with colon,Shift production start time
+walvoil_dpr_sample_1.jpg,row01_col04_time_end,table,1,4,time_end,time_hh_mm,-,OP-Kashinath,flatbed_phone_desk,Single dash stroke indicating ongoing,Hyphen/dash entry
+walvoil_dpr_sample_1.jpg,row01_col05_qty,table,1,5,qty,alphanumeric,5 no,OP-Kashinath,flatbed_phone_desk,Handwritten digit 5 with cursive no,Completed batch quantity
+walvoil_dpr_sample_1.jpg,row01_col06_remarks,table,1,6,remarks,alpha_text,No cloche,OP-Kashinath,flatbed_phone_desk,Cursive technician note,Assembly variation note
+walvoil_dpr_sample_1.jpg,row01_col07_idle_code,table,1,7,idle_code,alphanumeric,A0,OP-Kashinath,flatbed_phone_desk,Capital A with numeral 0,Standard downtime idle code
+walvoil_dpr_sample_1.jpg,row01_col10_total_time,table,1,10,total_time,alphanumeric,4.0 hrs,OP-Kashinath,flatbed_phone_desk,Decimal hours 4.0 followed by hrs,Cumulative duration
+walvoil_dpr_sample_1.jpg,row02_col00_pwh,table_subrow,2,0,pwh_subrow,numeric,2638049,OP-Kashinath,flatbed_phone_desk,7-digit batch number ending in 9,Upper sub-row
+walvoil_dpr_sample_1.jpg,row02_col00_ord_no,table_subrow,2,0,ord_subrow,numeric,1118501,OP-Kashinath,flatbed_phone_desk,7-digit order number ending in 01,Lower sub-row
+walvoil_dpr_sample_1.jpg,row02_col01_family,table,2,1,family,alphanumeric,SD6/6,OP-Kashinath,flatbed_phone_desk,Walvoil valve series SD6 with fraction 6,Product family code
+walvoil_dpr_sample_1.jpg,row02_col02_part_number,table,2,2,part_number,numeric,112600132,OP-Kashinath,flatbed_phone_desk,9-digit factory part number,Primary assembly part number
+walvoil_dpr_sample_1.jpg,row02_col05_qty,table,2,5,qty,alphanumeric,5 no,OP-Kashinath,flatbed_phone_desk,Handwritten digit 5 with no,Completed quantity
+walvoil_dpr_sample_1.jpg,row02_col06_remarks,table,2,6,remarks,alpha_text,with motors,OP-Kashinath,flatbed_phone_desk,Cursive text with motors,Motorized spool actuator note
+walvoil_dpr_sample_1.jpg,row02_col10_total_time,table,2,10,total_time,alpha_text,make change,OP-Kashinath,flatbed_phone_desk,Cursive changeover activity description,Non-numeric activity text
+walvoil_dpr_sample_1.jpg,row03_col00_pwh,table_subrow,3,0,pwh_subrow,numeric,2638440,OP-Kashinath,flatbed_phone_desk,7-digit batch number,Batch identifier
+walvoil_dpr_sample_1.jpg,row03_col00_ord_no,table_subrow,3,0,ord_subrow,numeric,1118627,OP-Kashinath,flatbed_phone_desk,7-digit order number,Customer order identifier
+walvoil_dpr_sample_1.jpg,row03_col01_family,table,3,1,family,alphanumeric,SD6/3,OP-Kashinath,flatbed_phone_desk,SD6 family with 3 section,Product family code
+walvoil_dpr_sample_1.jpg,row03_col02_part_number,table,3,2,part_number,numeric,112300388,OP-Kashinath,flatbed_phone_desk,9-digit part number,Part code
+walvoil_dpr_sample_1.jpg,row03_col05_qty,table,3,5,qty,alphanumeric,5 no,OP-Kashinath,flatbed_phone_desk,Digit 5 with no,Quantity
+walvoil_dpr_sample_1.jpg,row03_col06_remarks,table,3,6,remarks,alpha_text,yal problem,OP-Kashinath,flatbed_phone_desk,Informal cursive note (valve/seal defect),Defect symptom note
+walvoil_dpr_sample_1.jpg,row04_col00_pwh,table_subrow,4,0,pwh_subrow,numeric,2637430,OP-Kashinath,flatbed_phone_desk,7-digit batch number,Batch identifier
+walvoil_dpr_sample_1.jpg,row04_col00_ord_no,table_subrow,4,0,ord_subrow,numeric,1118351,OP-Kashinath,flatbed_phone_desk,7-digit order number,Customer order identifier
+walvoil_dpr_sample_1.jpg,row04_col01_family,table,4,1,family,alphanumeric,SD6/1,OP-Kashinath,flatbed_phone_desk,SD6 family 1 section,Product family code
+walvoil_dpr_sample_1.jpg,row04_col02_part_number,table,4,2,part_number,numeric,512105257,OP-Kashinath,flatbed_phone_desk,9-digit part number,Part code
+walvoil_dpr_sample_1.jpg,row04_col04_time_end,table,4,4,time_end,time_hh_mm,2:00,OP-Kashinath,flatbed_phone_desk,Handwritten 2:00 end time,Shift completion time
+walvoil_dpr_sample_1.jpg,row04_col05_qty,table,4,5,qty,alphanumeric,5 no,OP-Kashinath,flatbed_phone_desk,Digit 5 with no,Quantity
+walvoil_dpr_sample_2.jpg,hdr_date,header,0,,date,date_dd_mm_yyyy,23/09/2026,OP-Jogannatha,flatbed_phone_desk,Slanted date with slashes,Date of production report
+walvoil_dpr_sample_2.jpg,hdr_operator_name,header,0,,operator_name,alpha_text,Jogannatha G.N.,OP-Jogannatha,flatbed_phone_desk,Cursive first name with capital initials,Operator name
+walvoil_dpr_sample_2.jpg,hdr_shift,header,0,,shift,alphanumeric,1st,OP-Jogannatha,flatbed_phone_desk,Numeral 1 with superscript st,Shift 1
+walvoil_dpr_sample_2.jpg,hdr_bench,header,0,,bench,numeric,11,OP-Jogannatha,flatbed_phone_desk,Handwritten two digits 11,Assembly bench 11
+walvoil_dpr_sample_2.jpg,hdr_worked_hours,header,0,,worked_hours,numeric,08,OP-Jogannatha,flatbed_phone_desk,Leading zero with 8 (08),Worked hours
+walvoil_dpr_sample_2.jpg,row01_col00_pwh,table_subrow,1,0,pwh_subrow,numeric,2638608,OP-Jogannatha,flatbed_phone_desk,7-digit batch number,Batch identifier
+walvoil_dpr_sample_2.jpg,row01_col00_ord_no,table_subrow,1,0,ord_subrow,numeric,1118714,OP-Jogannatha,flatbed_phone_desk,7-digit order number,Customer order identifier
+walvoil_dpr_sample_2.jpg,row01_col01_family,table,1,1,family,alphanumeric,SD5/1,OP-Jogannatha,flatbed_phone_desk,Walvoil SD5 family 1 section,Product family code
+walvoil_dpr_sample_2.jpg,row01_col02_part_number,table,1,2,part_number,alphanumeric,1021H0001-A,OP-Jogannatha,flatbed_phone_desk,Alphanumeric code with H and hyphen A,Complex valve part code
+walvoil_dpr_sample_2.jpg,row01_col03_time_start,table,1,3,time_start,time_hh_mm,6:00,OP-Jogannatha,flatbed_phone_desk,Handwritten 6:00 with colon,Start time
+walvoil_dpr_sample_2.jpg,row01_col05_qty,table,1,5,qty,numeric,34,OP-Jogannatha,flatbed_phone_desk,Two-digit pure integer 34,Quantity produced
+walvoil_dpr_sample_2.jpg,row02_col02_part_number,table,2,2,part_number,alpha_text,Assy Completed,OP-Jogannatha,flatbed_phone_desk,Cursive text spanning part column,Status annotation
+walvoil_dpr_sample_2.jpg,row03_col02_part_number,table,3,2,part_number,alphanumeric,No Load - 2:00,OP-Jogannatha,flatbed_phone_desk,Cursive No Load with dash time,Downtime annotation
+

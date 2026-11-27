@@ -1,0 +1,70 @@
+{
+  "timestamp": "2026-11-06T10:24:09Z",
+  "hardware": {
+    "processor": "Intel Core i3-10110U @ 2.10GHz",
+    "cores": 2,
+    "threads": 4,
+    "ram_total_gb": 16.0,
+    "accelerator": "None (Intel UHD Graphics, CPU-Only Inference)",
+    "os": "Windows 11 Home",
+    "python_version": "3.12.10"
+  },
+  "benchmarks": {
+    "model_engine_reuse": {
+      "initial_check_ms": 0.47,
+      "subsequent_check_ms": 0.006,
+      "singleton_reused": true,
+      "peak_memory_kb": 0.78
+    },
+    "image_preprocessing": {
+      "sample_1": {
+        "avg_ms": 166.18,
+        "min_ms": 127.9,
+        "max_ms": 270.05
+      },
+      "sample_2": {
+        "avg_ms": 158.53,
+        "min_ms": 133.72,
+        "max_ms": 182.77
+      },
+      "peak_memory_mb": 11.25
+    },
+    "layout_detection": {
+      "avg_ms": 132.9,
+      "min_ms": 98.51,
+      "max_ms": 156.89,
+      "regions_segmented": 189,
+      "peak_memory_mb": 6.76
+    },
+    "full_page_recognition": {
+      "sample_1": {
+        "avg_ms": 365.61,
+        "min_ms": 283.19,
+        "max_ms": 425.9,
+        "active_cells_recognized": 35,
+        "cancelled_cells_pruned": 130,
+        "empty_cells_pruned": 0
+      },
+      "sample_2": {
+        "avg_ms": 376.44,
+        "min_ms": 266.28,
+        "max_ms": 436.21
+      },
+      "peak_memory_mb": 6.76
+    },
+    "concurrency": {
+      "concurrent_2_requests_wall_ms": 540.53,
+      "concurrent_2_throughput_pages_per_sec": 3.7,
+      "concurrent_4_requests_wall_ms": 655.4,
+      "concurrent_4_throughput_pages_per_sec": 6.1,
+      "multi_report_isolation_verified": true
+    },
+    "cache_management": {
+      "max_capacity_configured": 50,
+      "ttl_seconds_configured": 3600,
+      "stored_entries_test": 25,
+      "cleared_entries_count": 0,
+      "bounded_memory_growth_verified": true
+    }
+  }
+}

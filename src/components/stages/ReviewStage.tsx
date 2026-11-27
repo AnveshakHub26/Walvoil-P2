@@ -1,14 +1,14 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   ArrowLeft,
   ArrowRight,
   Columns,
   Maximize2,
   Table as TableIcon,
-  Sparkles,
   RefreshCw,
   AlertTriangle,
 } from 'lucide-react';
+import { getScanQuotaStatus } from '../../services/recognitionApi';
 import type { UploadedReportImage } from '../../types/workflow';
 import type {
   ReportSheetData,
@@ -65,6 +65,14 @@ export const ReviewStage: React.FC<ReviewStageProps> = ({
   const [viewMode, setViewMode] = useState<'split' | 'table' | 'scan'>('split');
   const [isConfirmResetOpen, setIsConfirmResetOpen] = useState<boolean>(false);
   const [isReRecognizing, setIsReRecognizing] = useState<boolean>(false);
+  const [quotaStatus, setQuotaStatus] = useState(() => getScanQuotaStatus());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setQuotaStatus(getScanQuotaStatus());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   // Convert reportsData dictionary to ordered array
   const sheetsList = Object.values(reportsData).sort((a, b) => a.sheetIndex - b.sheetIndex);
@@ -189,17 +197,16 @@ export const ReviewStage: React.FC<ReviewStageProps> = ({
       {/* Top Banner & Primary Navigation */}
       <div className="bg-white border border-slate-200 rounded p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-2xs">
         <div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2.5">
             <h2 className="text-base font-semibold text-slate-900 tracking-tight">
-              Human Verification &amp; Correction Interface
+              Review &amp; Edit Reports
             </h2>
-            <Badge variant="navy">Phase 14</Badge>
             <Badge variant="neutral">
               {sheetsList.length} {sheetsList.length === 1 ? 'Report' : 'Reports'}
             </Badge>
           </div>
           <p className="text-xs text-slate-600 mt-1 max-w-2xl leading-relaxed">
-            Verify AI-transcribed data against the original handwritten record. Click any field to inspect its scan region.
+            Review extracted table fields against the uploaded sheet before downloading Excel.
           </p>
         </div>
 
@@ -208,7 +215,7 @@ export const ReviewStage: React.FC<ReviewStageProps> = ({
             variant="secondary"
             icon={<ArrowLeft className="w-4 h-4" />}
             onClick={onBack}
-            title="Return to upload stage (uploaded images and edits are preserved)"
+            title="Return to upload stage"
           >
             Back to Upload
           </Button>
@@ -224,17 +231,14 @@ export const ReviewStage: React.FC<ReviewStageProps> = ({
         </div>
       </div>
 
-      {/* Empty Sheet Banner with Instant OCR Auto-Fill Action */}
+      {/* Empty Sheet Banner */}
       {isSheetEmpty && (
-        <div className="bg-blue-50 border border-blue-200 rounded p-3 text-xs text-blue-950 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
-          <div className="flex items-start gap-2.5">
-            <Sparkles className="w-4 h-4 text-blue-700 shrink-0 mt-0.5" />
-            <div>
-              <span className="font-semibold text-blue-900">Live OCR Model Ready: </span>
-              <span className="text-blue-800">
-                This sheet is currently blank. Click "Run Live OCR" to transcribe all handwritten entries directly from your scan.
-              </span>
-            </div>
+        <div className="bg-slate-50 border border-slate-200 rounded p-3 text-xs text-slate-700 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
+          <div>
+            <span className="font-semibold text-slate-900">Sheet Empty: </span>
+            <span className="text-slate-600">
+              No entries detected yet. Click "Scan Sheet" to extract entries from your photo.
+            </span>
           </div>
           {onReRunRecognition && (
             <Button
@@ -242,40 +246,39 @@ export const ReviewStage: React.FC<ReviewStageProps> = ({
               size="sm"
               icon={<RefreshCw className={`w-3.5 h-3.5 ${isReRecognizing ? 'animate-spin' : ''}`} />}
               onClick={handleReRun}
-              disabled={isReRecognizing}
+              disabled={isReRecognizing || quotaStatus.remaining === 0}
               className="shrink-0 shadow-xs"
             >
-              Run Live OCR
+              Scan Sheet
             </Button>
           )}
         </div>
       )}
 
-      {/* Recognition Status & Governance Banner */}
+      {/* Sheet Status & Live Quota Counter */}
       {activeSheet?.recognitionStatus === 'success' ? (
-        <div className="bg-slate-50 border border-slate-200 rounded p-3 text-xs text-slate-700 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
-          <div className="flex items-start gap-2.5">
-            <Sparkles className="w-4 h-4 text-[#0f2a4a] shrink-0 mt-0.5" />
-            <div>
-              <span className="font-semibold text-slate-900">
-                Gemini Vision AI Active ({activeSheet.fileName}):{' '}
-              </span>
-              <span className="text-slate-600">
-                {activeSheet.summaryStats?.recognizedCells ?? 0} active cells transcribed,{' '}
-                {activeSheet.summaryStats?.cancelledCells ?? 0} cancelled cells bypassed,{' '}
-                {activeSheet.summaryStats?.needsReviewCount ?? reviewQueue.length} pending human verification.
-              </span>
-              {activeSheet.processingTimeMs && (
-                <span className="text-[11px] text-slate-400 ml-1">
-                  (Latency: {Math.round(activeSheet.processingTimeMs)} ms)
-                </span>
-              )}
-            </div>
+        <div className="bg-slate-50 border border-slate-200 rounded px-3 py-2 text-xs text-slate-700 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 shadow-2xs">
+          <div className="flex items-center gap-2">
+            <span className="font-semibold text-slate-900">{activeSheet.fileName}</span>
+            <span className="text-slate-300">•</span>
+            <span className="text-slate-600">{activeSheet.summaryStats?.recognizedCells ?? 0} fields extracted</span>
           </div>
           <div className="flex items-center gap-2 shrink-0 flex-wrap">
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-2xs">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-              Quota: 15 Scans / Min (Active)
+            <span
+              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold border ${
+                quotaStatus.remaining <= 2
+                  ? 'bg-amber-50 text-amber-800 border-amber-200'
+                  : 'bg-emerald-50 text-emerald-700 border-emerald-200'
+              }`}
+            >
+              <span
+                className={`w-1.5 h-1.5 rounded-full ${
+                  quotaStatus.remaining <= 2 ? 'bg-amber-500' : 'bg-emerald-500 animate-pulse'
+                }`}
+              ></span>
+              {quotaStatus.remaining > 0
+                ? `${quotaStatus.remaining} of 15 scans available this min`
+                : `Limit reached (ready in ${quotaStatus.resetSeconds}s)`}
             </span>
             {onReRunRecognition && (
               <Button
@@ -283,31 +286,21 @@ export const ReviewStage: React.FC<ReviewStageProps> = ({
                 size="sm"
                 icon={<RefreshCw className={`w-3.5 h-3.5 ${isReRecognizing ? 'animate-spin' : ''}`} />}
                 onClick={handleReRun}
-                disabled={isReRecognizing}
-                title="Re-run Gemini Vision model on this scan"
+                disabled={isReRecognizing || quotaStatus.remaining === 0}
+                title="Re-scan this sheet"
               >
-                Re-run Scan
+                Re-scan
               </Button>
             )}
           </div>
         </div>
       ) : activeSheet?.recognitionError ? (
-        <div className={`p-3 text-xs rounded border flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs ${
-          activeSheet.recognitionError.toLowerCase().includes('limit')
-            ? 'bg-amber-50 border-amber-300 text-amber-950'
-            : 'bg-amber-50/80 border-amber-300 text-amber-900'
-        }`}>
-          <div className="flex items-start gap-2.5">
+        <div className="bg-amber-50 border border-amber-300 rounded px-3 py-2 text-xs text-amber-950 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 shadow-2xs">
+          <div className="flex items-start gap-2">
             <AlertTriangle className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
             <div>
-              <span className="font-semibold text-amber-950">
-                {activeSheet.recognitionError.toLowerCase().includes('limit')
-                  ? 'Model Rate Limit (15 Scans / Min): '
-                  : 'Backend Recognition Notice: '}
-              </span>
-              <span className="text-amber-800">
-                {activeSheet.recognitionError}
-              </span>
+              <span className="font-semibold">Notice: </span>
+              <span className="text-amber-900">{activeSheet.recognitionError}</span>
             </div>
           </div>
           <div className="flex items-center gap-2 shrink-0">
@@ -317,9 +310,15 @@ export const ReviewStage: React.FC<ReviewStageProps> = ({
                 size="sm"
                 icon={<RefreshCw className={`w-3.5 h-3.5 ${isReRecognizing ? 'animate-spin' : ''}`} />}
                 onClick={handleReRun}
-                disabled={isReRecognizing}
+                disabled={isReRecognizing || quotaStatus.remaining === 0}
                 className="shrink-0 shadow-xs"
               >
+                {quotaStatus.remaining === 0 ? `Wait (${quotaStatus.resetSeconds}s)` : 'Retry Scan'}
+              </Button>
+            )}
+          </div>
+        </div>
+      ) : null}
                 Retry Scan
               </Button>
             )}

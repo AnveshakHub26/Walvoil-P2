@@ -116,9 +116,31 @@ export async function checkBackendStatus(): Promise<{
   }
 }
 
+// Sliding window rate limit tracker (15 requests/minute)
+const scanTimestamps: number[] = [];
+
+export function recordScanAttempt() {
+  scanTimestamps.push(Date.now());
+}
+
+export function getScanQuotaStatus(): { remaining: number; resetSeconds: number; currentCount: number } {
+  const now = Date.now();
+  // Filter out timestamps older than 60 seconds
+  const valid = scanTimestamps.filter((t) => now - t < 60000);
+  const count = valid.length;
+  const remaining = Math.max(0, 15 - count);
+  let resetSeconds = 0;
+  if (valid.length > 0) {
+    const oldest = Math.min(...valid);
+    resetSeconds = Math.max(1, Math.ceil((60000 - (now - oldest)) / 1000));
+  }
+  return { remaining, resetSeconds, currentCount: count };
+}
+
 export async function recognizeReportScan(
   file: File
 ): Promise<BackendRecognitionResponse> {
+  recordScanAttempt();
   const baseUrl = getBackendBaseUrl();
   const formData = new FormData();
   formData.append('file', file, file.name);

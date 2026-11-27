@@ -20,12 +20,13 @@ dist-ssr/
 !backend/.env.example
 *.local
 
+# Scratch and test files
+scratch*
+test_full_sheet.jpg
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
 .idea/
 .DS_Store
 Thumbs.db
-scratch*
-test_full_sheet.jpg
-

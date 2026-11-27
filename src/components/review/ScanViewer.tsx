@@ -162,15 +162,10 @@ export const ScanViewer: React.FC<ScanViewerProps> = ({
 
         {/* Floating Tooltip Label */}
         <div
-          className={`absolute -top-6 left-0 px-1.5 py-0.5 rounded text-[10px] font-mono font-medium shadow-md flex items-center gap-1 whitespace-nowrap select-none ${badgeColor}`}
+          className={`absolute -top-6 left-0 px-2 py-0.5 rounded text-[11px] font-medium shadow-sm flex items-center gap-1.5 whitespace-nowrap select-none capitalize ${badgeColor}`}
         >
-          <span>{selectedFieldMeta.fieldName}</span>
+          <span>{selectedFieldMeta.fieldName.replace(/_/g, ' ')}</span>
           <span className="opacity-80">({label})</span>
-          {selectedFieldMeta.modelUsed && (
-            <span className="text-[9px] opacity-75">
-              • {selectedFieldMeta.modelUsed.includes('trocr') ? 'TrOCR' : 'PP-OCR'}
-            </span>
-          )}
         </div>
       </div>
     );

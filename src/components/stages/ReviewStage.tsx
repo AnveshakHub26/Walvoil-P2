@@ -319,12 +319,6 @@ export const ReviewStage: React.FC<ReviewStageProps> = ({
           </div>
         </div>
       ) : null}
-                Retry Scan
-              </Button>
-            )}
-          </div>
-        </div>
-      ) : null}
 
       {/* Tab Strip for Page Selection & View Mode Toggles */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">

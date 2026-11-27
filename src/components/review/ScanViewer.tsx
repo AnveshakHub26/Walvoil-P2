@@ -308,9 +308,8 @@ export const ScanViewer: React.FC<ScanViewerProps> = ({
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
-        className={`flex-1 bg-slate-900/5 relative overflow-hidden flex items-center justify-center min-h-[460px] max-h-[700px] select-none ${
-          zoomLevel > 1 ? (isDragging ? 'cursor-grabbing' : 'cursor-grab') : 'cursor-default'
-        }`}
+        className={`flex-1 bg-slate-900/5 relative overflow-hidden flex items-center justify-center min-h-[460px] max-h-[700px] select-none ${zoomLevel > 1 ? (isDragging ? 'cursor-grabbing' : 'cursor-grab') : 'cursor-default'
+          }`}
       >
         <div
           className="relative transition-transform duration-75 inline-block max-w-full shadow-md bg-white border border-slate-300"

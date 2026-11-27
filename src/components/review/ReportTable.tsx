@@ -39,7 +39,7 @@ export const ReportTable: React.FC<ReportTableProps> = ({
   onSelectField,
   onUpdateHeader,
   onUpdateRow,
-  onConfirmField,
+  onConfirmField: _onConfirmField,
   onRevertField: _onRevertField,
   onConfirmRow,
   onConfirmAllSheet,
@@ -74,8 +74,8 @@ export const ReportTable: React.FC<ReportTableProps> = ({
   // Helper to render field cell status indicator & quick confirm
   const renderFieldBadge = (
     meta?: FieldMetadata,
-    rowId: string | 'header' = 'header',
-    fieldKey: string = ''
+    _rowId: string | 'header' = 'header',
+    _fieldKey: string = ''
   ) => {
     if (!meta) return null;
 

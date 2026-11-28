@@ -68,10 +68,14 @@ export const ReviewStage: React.FC<ReviewStageProps> = ({
   const [quotaStatus, setQuotaStatus] = useState(() => getScanQuotaStatus());
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setQuotaStatus(getScanQuotaStatus());
-    }, 1000);
-    return () => clearInterval(timer);
+    const updateQuota = () => setQuotaStatus(getScanQuotaStatus());
+    updateQuota();
+    const timer = setInterval(updateQuota, 1000);
+    window.addEventListener('walvoil_quota_updated', updateQuota);
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener('walvoil_quota_updated', updateQuota);
+    };
   }, []);
 
   // Convert reportsData dictionary to ordered array

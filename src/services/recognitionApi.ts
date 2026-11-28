@@ -117,21 +117,52 @@ export async function checkBackendStatus(): Promise<{
 }
 
 // Sliding window rate limit tracker (15 requests/minute)
-const scanTimestamps: number[] = [];
+const STORAGE_KEY = 'walvoil_scan_timestamps';
+
+function getStoredTimestamps(): number[] {
+  try {
+    const raw = typeof window !== 'undefined' ? sessionStorage.getItem(STORAGE_KEY) : null;
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) {
+        const now = Date.now();
+        return parsed.filter((t: unknown): t is number => typeof t === 'number' && now - t < 60000);
+      }
+    }
+  } catch {
+    // Fallback if sessionStorage is not accessible
+  }
+  return [];
+}
+
+function saveStoredTimestamps(timestamps: number[]) {
+  try {
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(timestamps));
+      window.dispatchEvent(new CustomEvent('walvoil_quota_updated'));
+    }
+  } catch {
+    // Ignore storage errors
+  }
+}
+
+let scanTimestamps: number[] = getStoredTimestamps();
 
 export function recordScanAttempt() {
-  scanTimestamps.push(Date.now());
+  const now = Date.now();
+  scanTimestamps = [...scanTimestamps.filter((t) => now - t < 60000), now];
+  saveStoredTimestamps(scanTimestamps);
 }
 
 export function getScanQuotaStatus(): { remaining: number; resetSeconds: number; currentCount: number } {
   const now = Date.now();
   // Filter out timestamps older than 60 seconds
-  const valid = scanTimestamps.filter((t) => now - t < 60000);
-  const count = valid.length;
+  scanTimestamps = scanTimestamps.filter((t) => now - t < 60000);
+  const count = scanTimestamps.length;
   const remaining = Math.max(0, 15 - count);
   let resetSeconds = 0;
-  if (valid.length > 0) {
-    const oldest = Math.min(...valid);
+  if (scanTimestamps.length > 0) {
+    const oldest = Math.min(...scanTimestamps);
     resetSeconds = Math.max(1, Math.ceil((60000 - (now - oldest)) / 1000));
   }
   return { remaining, resetSeconds, currentCount: count };

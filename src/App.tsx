@@ -7,7 +7,7 @@ import type {
   HeaderFieldKey,
 } from './types/report';
 import { createEmptyReportSheet } from './data/mockReportData';
-import { recognizeReportScan } from './services/recognitionApi';
+import { recognizeReportScan, getScanQuotaStatus } from './services/recognitionApi';
 import { convertBackendResponseToReportSheet } from './utils/recognitionAdapter';
 import { Header } from './components/layout/Header';
 import { StepNavigation } from './components/layout/StepNavigation';
@@ -130,6 +130,17 @@ export function App() {
       // Only skip if already recognized for this EXACT file instance
       if (currentSheet?.recognitionStatus === 'success' && currentSheet?.fileId === fileItem.id) {
         continue;
+      }
+
+      // If rate limit window is full, countdown smoothly until the next scan slot opens
+      const quota = getScanQuotaStatus();
+      if (quota.remaining === 0) {
+        for (let s = quota.resetSeconds; s > 0; s--) {
+          setRecognitionProgressText(
+            `Model rate limit reached (15/min). Waiting ${s}s to scan Report ${sheetIndex} of ${uploadedFiles.length}...`
+          );
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+        }
       }
 
       setRecognitionProgressText(

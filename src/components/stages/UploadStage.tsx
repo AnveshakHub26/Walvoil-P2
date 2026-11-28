@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   UploadCloud,
   FileImage,
@@ -15,6 +15,7 @@ import { Button } from '../common/Button';
 import { Badge } from '../common/Badge';
 import { ConfirmationModal } from '../common/ConfirmationModal';
 import { extractPagesFromPdf } from '../../utils/pdfProcessor';
+import { getScanQuotaStatus } from '../../services/recognitionApi';
 
 interface UploadStageProps {
   uploadedFiles: UploadedReportImage[];
@@ -70,6 +71,18 @@ export const UploadStage: React.FC<UploadStageProps> = ({
   // Confirmation modal states
   const [isConfirmClearAllOpen, setIsConfirmClearAllOpen] = useState(false);
   const [filePendingRemoval, setFilePendingRemoval] = useState<UploadedReportImage | null>(null);
+  const [quotaStatus, setQuotaStatus] = useState(() => getScanQuotaStatus());
+
+  useEffect(() => {
+    const updateQuota = () => setQuotaStatus(getScanQuotaStatus());
+    updateQuota();
+    const timer = setInterval(updateQuota, 1000);
+    window.addEventListener('walvoil_quota_updated', updateQuota);
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener('walvoil_quota_updated', updateQuota);
+    };
+  }, []);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dragCounter = useRef(0);
@@ -290,7 +303,23 @@ export const UploadStage: React.FC<UploadStageProps> = ({
           </p>
         </div>
 
-        <div className="flex items-center gap-3 shrink-0">
+        <div className="flex items-center gap-3 shrink-0 flex-wrap">
+          <span
+            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold border ${
+              quotaStatus.remaining <= 2
+                ? 'bg-amber-50 text-amber-800 border-amber-200'
+                : 'bg-emerald-50 text-emerald-700 border-emerald-200'
+            }`}
+          >
+            <span
+              className={`w-1.5 h-1.5 rounded-full ${
+                quotaStatus.remaining <= 2 ? 'bg-amber-500' : 'bg-emerald-500 animate-pulse'
+              }`}
+            ></span>
+            {quotaStatus.remaining > 0
+              ? `${quotaStatus.remaining} of 15 scans available this min`
+              : `Limit reached (ready in ${quotaStatus.resetSeconds}s)`}
+          </span>
           <Button
             variant="walvoil-red"
             disabled={totalPages === 0 || isRecognizing}

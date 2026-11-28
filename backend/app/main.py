@@ -14,6 +14,8 @@ import time
 import uuid
 from contextlib import asynccontextmanager
 
+from typing import List
+
 from fastapi import FastAPI, HTTPException, Request, Response, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -26,7 +28,7 @@ from app.services.image_preprocessing import processed_image_store
 
 os.makedirs(settings.LOG_DIR, exist_ok=True)
 
-logging_handlers = [logging.StreamHandler()]
+logging_handlers: List[logging.Handler] = [logging.StreamHandler()]
 try:
     file_handler = logging.FileHandler(settings.LOG_FILE_PATH, encoding="utf-8")
     logging_handlers.append(file_handler)

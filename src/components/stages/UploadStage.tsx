@@ -14,6 +14,7 @@ import { Card } from '../common/Card';
 import { Button } from '../common/Button';
 import { Badge } from '../common/Badge';
 import { ConfirmationModal } from '../common/ConfirmationModal';
+import { extractPagesFromPdf } from '../../utils/pdfProcessor';
 
 interface UploadStageProps {
   uploadedFiles: UploadedReportImage[];
@@ -25,9 +26,14 @@ interface UploadStageProps {
   recognitionProgressText?: string;
 }
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB per image
-const ALLOWED_MIME_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
-const ALLOWED_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp'];
+const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50 MB
+const ALLOWED_MIME_TYPES = [
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'application/pdf',
+];
+const ALLOWED_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.pdf'];
 
 function formatFileSize(bytes: number): string {
   if (bytes === 0) return '0 B';
@@ -37,7 +43,7 @@ function formatFileSize(bytes: number): string {
   return `${parseFloat((bytes / Math.pow(k, i)).toFixed(1))} ${sizes[i]}`;
 }
 
-function isSupportedImage(file: File): boolean {
+function isSupportedFile(file: File): boolean {
   if (file.type && ALLOWED_MIME_TYPES.includes(file.type.toLowerCase())) {
     return true;
   }
@@ -58,6 +64,8 @@ export const UploadStage: React.FC<UploadStageProps> = ({
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const [previewingImage, setPreviewingImage] = useState<UploadedReportImage | null>(null);
   const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
+  const [isProcessingPdf, setIsProcessingPdf] = useState(false);
+  const [pdfStatusText, setPdfStatusText] = useState('');
 
   // Confirmation modal states
   const [isConfirmClearAllOpen, setIsConfirmClearAllOpen] = useState(false);
@@ -70,7 +78,7 @@ export const UploadStage: React.FC<UploadStageProps> = ({
     setImageErrors((prev) => ({ ...prev, [fileId]: true }));
   };
 
-  const processFiles = (files: File[]) => {
+  const processFiles = async (files: File[]) => {
     if (!files || files.length === 0) {
       setValidationErrors((prev) => [...prev, 'No files were provided for upload.']);
       return;
@@ -88,49 +96,90 @@ export const UploadStage: React.FC<UploadStageProps> = ({
       }
 
       // 2. Validate file type
-      if (!isSupportedImage(file)) {
+      if (!isSupportedFile(file)) {
         errors.push(
-          `Unsupported file format for "${file.name}". Accepted formats: JPG, JPEG, PNG, WEBP.`
+          `Unsupported file format for "${file.name}". Accepted formats: JPG, JPEG, PNG, WEBP, PDF.`
         );
         continue;
       }
 
-      // 3. Validate file size (10 MB limit)
+      // 3. Validate file size (50 MB limit)
       if (file.size > MAX_FILE_SIZE) {
         errors.push(
-          `"${file.name}" (${formatFileSize(file.size)}) exceeds the 10 MB per-image limit.`
+          `"${file.name}" (${formatFileSize(file.size)}) exceeds the 50 MB limit.`
         );
         continue;
       }
 
-      // 4. Prevent duplicate selection
-      const fileKey = `${file.name}_${file.size}_${file.lastModified}`;
-      const isAlreadyUploaded = uploadedFiles.some(
-        (existing) =>
-          existing.name === file.name &&
-          existing.size === file.size &&
-          existing.lastModified === file.lastModified
-      );
+      const isPdf =
+        file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
 
-      if (isAlreadyUploaded || currentBatchKeys.has(fileKey)) {
-        errors.push(`Duplicate file skipped: "${file.name}" is already selected.`);
-        continue;
+      if (isPdf) {
+        try {
+          setIsProcessingPdf(true);
+          setPdfStatusText(`Reading PDF document "${file.name}"...`);
+          const pageFiles = await extractPagesFromPdf(file, (curr, total) => {
+            setPdfStatusText(`Extracting page ${curr} of ${total} from "${file.name}"...`);
+          });
+
+          if (pageFiles.length === 0) {
+            errors.push(`No pages could be extracted from "${file.name}".`);
+            continue;
+          }
+
+          for (const pageFile of pageFiles) {
+            const fileKey = `${pageFile.name}_${pageFile.size}`;
+            if (currentBatchKeys.has(fileKey)) continue;
+            currentBatchKeys.add(fileKey);
+
+            const previewUrl = URL.createObjectURL(pageFile);
+            validFilesToAdd.push({
+              id: `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
+              file: pageFile,
+              previewUrl,
+              name: pageFile.name,
+              size: pageFile.size,
+              formattedSize: formatFileSize(pageFile.size),
+              type: 'image/jpeg',
+              lastModified: pageFile.lastModified,
+            });
+          }
+        } catch (pdfErr) {
+          const msg = pdfErr instanceof Error ? pdfErr.message : 'Unknown PDF error';
+          errors.push(`Failed to extract pages from "${file.name}": ${msg}`);
+        } finally {
+          setIsProcessingPdf(false);
+          setPdfStatusText('');
+        }
+      } else {
+        // Standard Image File Handling
+        const fileKey = `${file.name}_${file.size}_${file.lastModified}`;
+        const isAlreadyUploaded = uploadedFiles.some(
+          (existing) =>
+            existing.name === file.name &&
+            existing.size === file.size &&
+            existing.lastModified === file.lastModified
+        );
+
+        if (isAlreadyUploaded || currentBatchKeys.has(fileKey)) {
+          errors.push(`Duplicate file skipped: "${file.name}" is already selected.`);
+          continue;
+        }
+
+        currentBatchKeys.add(fileKey);
+
+        const previewUrl = URL.createObjectURL(file);
+        validFilesToAdd.push({
+          id: `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
+          file,
+          previewUrl,
+          name: file.name,
+          size: file.size,
+          formattedSize: formatFileSize(file.size),
+          type: file.type || 'image',
+          lastModified: file.lastModified,
+        });
       }
-
-      currentBatchKeys.add(fileKey);
-
-      // Create object URL for local rendering
-      const previewUrl = URL.createObjectURL(file);
-      validFilesToAdd.push({
-        id: `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
-        file,
-        previewUrl,
-        name: file.name,
-        size: file.size,
-        formattedSize: formatFileSize(file.size),
-        type: file.type || 'image',
-        lastModified: file.lastModified,
-      });
     }
 
     if (errors.length > 0) {
@@ -216,7 +265,7 @@ export const UploadStage: React.FC<UploadStageProps> = ({
         ref={fileInputRef}
         type="file"
         multiple
-        accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+        accept=".jpg,.jpeg,.png,.webp,.pdf,image/jpeg,image/png,image/webp,application/pdf"
         onChange={handleFileInputChange}
         className="hidden"
         aria-label="Upload report files"
@@ -281,6 +330,17 @@ export const UploadStage: React.FC<UploadStageProps> = ({
         </div>
       )}
 
+      {/* PDF Splitting Progress Banner */}
+      {isProcessingPdf && (
+        <div className="bg-slate-50 border border-slate-300 rounded p-4 text-xs text-slate-800 flex items-center gap-3 shadow-2xs">
+          <div className="w-5 h-5 border-2 border-[#0f2a4a] border-t-transparent rounded-full animate-spin shrink-0" />
+          <div>
+            <span className="font-semibold text-slate-950">Splitting Multi-Page PDF: </span>
+            <span className="text-slate-700">{pdfStatusText}</span>
+          </div>
+        </div>
+      )}
+
       {/* Validation Errors Alert Banner */}
       {validationErrors.length > 0 && (
         <div
@@ -325,7 +385,7 @@ export const UploadStage: React.FC<UploadStageProps> = ({
           {/* Prominent Drag and Drop Upload Area */}
           <Card
             title="Scan Document Upload"
-            subtitle="JPG, JPEG, PNG or WEBP up to 10 MB per image"
+            subtitle="JPG, JPEG, PNG, WEBP, or multi-page PDF documents up to 50 MB"
             action={
               totalPages > 0 ? (
                 <Button
@@ -376,7 +436,7 @@ export const UploadStage: React.FC<UploadStageProps> = ({
                   : 'Drag and drop handwritten report photos or scans here'}
               </h4>
               <p className="text-xs text-slate-500 mt-1">
-                Select multiple files at once. Supports JPG, JPEG, PNG and WEBP (Max 10 MB each).
+                Select multiple files or a multi-page PDF. Supports JPG, PNG, WEBP and PDF (Max 50 MB).
               </p>
 
               <div className="mt-4 flex items-center justify-center">
@@ -541,11 +601,11 @@ export const UploadStage: React.FC<UploadStageProps> = ({
             <dl className="divide-y divide-slate-100 text-xs">
               <div className="py-2.5 flex justify-between">
                 <dt className="text-slate-500">Allowed Formats:</dt>
-                <dd className="font-semibold text-slate-800">JPG, JPEG, PNG, WEBP</dd>
+                <dd className="font-semibold text-slate-800">JPG, PNG, WEBP, PDF</dd>
               </div>
               <div className="py-2.5 flex justify-between">
                 <dt className="text-slate-500">Maximum File Size:</dt>
-                <dd className="font-semibold text-slate-800">10 MB per image</dd>
+                <dd className="font-semibold text-slate-800">50 MB per file</dd>
               </div>
               <div className="py-2.5 flex justify-between">
                 <dt className="text-slate-500">Multi-File Intake:</dt>

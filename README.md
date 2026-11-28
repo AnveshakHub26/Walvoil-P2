@@ -8,7 +8,7 @@ Built using FastAPI for the backend, React + Vite + Tailwind for the UI, and Goo
 
 ## What it does
 
-1. **Uploads DPR Scans**: Takes mobile photos or scanner images (JPG/PNG/WEBP) of daily production sheets.
+1. **Uploads DPR Scans & Multi-Page PDFs**: Takes mobile photos, single images (JPG/PNG/WEBP), or entire multi-page PDF scans (containing 10–15+ reports). The app automatically splits every PDF page into high-resolution report sheets.
 2. **Vision Extraction**: Transcribes handwritten text, operator names, part numbers, quantities, batches, and remarks in about 5 seconds.
 3. **Interactive Review**: Split screen viewer where operators can review the extracted table side-by-side with the scanned photo, click on cells to inspect bounding boxes, and make quick edits.
 4. **Excel Export**: Generates an exact `.xlsx` file matching the Walvoil paper layout (proper column widths, row heights, headers, and footer) directly to your Downloads folder.

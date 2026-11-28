@@ -37,7 +37,7 @@ def format_file_size(size_bytes: int) -> str:
     return format_bytes_size(size_bytes)
 
 
-@router.get("/status")
+@router.api_route("/status", methods=["GET", "HEAD"])
 def get_reports_service_status():
     """Return the operational status of the DPR reports pipeline."""
     return {

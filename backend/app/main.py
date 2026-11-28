@@ -169,7 +169,7 @@ async def http_exception_handler(request: Request, exc: HTTPException):
 # ── System Endpoints ─────────────────────────────────────────────────────────
 
 
-@app.get("/", tags=["system"])
+@app.api_route("/", methods=["GET", "HEAD"], tags=["system"])
 def root_endpoint():
     """Root endpoint returning application name, version, and status."""
     return {
@@ -181,7 +181,7 @@ def root_endpoint():
     }
 
 
-@app.get("/health", tags=["system"])
+@app.api_route("/health", methods=["GET", "HEAD"], tags=["system"])
 def health_endpoint():
     """Service health and operational readiness check."""
     uptime_seconds = round(time.time() - app_start_time, 2)
@@ -212,7 +212,7 @@ app.add_api_route(
 app.add_api_route(
     f"{settings.API_V1_PREFIX}/status",
     get_reports_service_status,
-    methods=["GET"],
+    methods=["GET", "HEAD"],
     tags=["system"],
 )
 
